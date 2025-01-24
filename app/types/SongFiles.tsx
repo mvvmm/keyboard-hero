@@ -1,6 +1,6 @@
 export type SongFiles = {
   album?: string;
-  audio?: string;
+  audio?: string[];
   background?: string;
   ini?: object;
 };

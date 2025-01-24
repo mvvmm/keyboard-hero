@@ -6,7 +6,7 @@ import ini from "ini";
 import path from "path";
 import { SongFiles } from "../types/SongFiles";
 
-export async function getSongAction(songSlug: string): Promise<SongFiles> {
+export async function getSongFilesAction(songSlug: string): Promise<SongFiles> {
   const decodedSlug = decodeURIComponent(songSlug);
   const privateSongsDirectory = path.join(process.cwd(), "songs", decodedSlug);
   const ret = {} as SongFiles;
@@ -38,14 +38,17 @@ export async function getSongAction(songSlug: string): Promise<SongFiles> {
       }
 
       // Audio
-      if (fileName.toLowerCase().startsWith("song.opus")) {
+      if (fileName.toLowerCase().endsWith(".opus")) {
         const publicAudiofilePath = path.join(
           "/",
           "songs",
           decodedSlug,
           fileName,
         );
-        ret.audio = publicAudiofilePath;
+        if (!ret.audio || ret.audio.length <= 0) {
+          ret.audio = [];
+        }
+        ret.audio.push(publicAudiofilePath);
       }
 
       // ini
